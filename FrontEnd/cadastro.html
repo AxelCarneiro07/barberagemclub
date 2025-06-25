@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - Barberagem Club</title>
+  <!-- Fonte Google para consistência com o site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset e configurações base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Oswald', sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="barber" patternUnits="userSpaceOnUse" width="100" height="100"><rect width="100" height="100" fill="%232c1810"/><rect x="0" y="0" width="50" height="50" fill="%238b4513" opacity="0.1"/><rect x="50" y="50" width="50" height="50" fill="%238b4513" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23barber)"/></svg>') center/cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+      padding: 2rem 1rem;
+    }
+
+    /* Efeito de partículas flutuantes */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(2px 2px at 20px 30px, #ffd700, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255, 215, 0, 0.3), transparent),
+        radial-gradient(1px 1px at 90px 40px, #ffd700, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 215, 0, 0.3), transparent),
+        radial-gradient(2px 2px at 160px 30px, #ffd700, transparent);
+      background-repeat: repeat;
+      background-size: 200px 100px;
+      animation: sparkle 20s linear infinite;
+      pointer-events: none;
+      opacity: 0.1;
+    }
+
+    @keyframes sparkle {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
+
+    /* Container principal */
+    .section {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 215, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Linha decorativa no topo */
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    /* Título */
+    .section h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 600;
+      color: #ffd700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 2.5rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    /* Formulário */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Container para campos lado a lado */
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Inputs */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="password"] {
+      font-family: 'Oswald', sans-serif;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      color: white;
+      font-weight: 400;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #ffd700;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    /* Estilo especial para input de data */
+    input[type="date"] {
+      color: rgba(255, 255, 255, 0.8);
+      position: relative;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
+    }
+
+    /* Validação visual */
+    .input-group {
+      position: relative;
+    }
+
+    .input-group.valid input {
+      border-color: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
+    }
+
+    .input-group.invalid input {
+      border-color: #ef4444;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      margin-left: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .input-group.invalid .error-message {
+      opacity: 1;
+    }
+
+    /* Indicador de força da senha */
+    .password-strength {
+      margin-top: 0.5rem;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .strength-weak { background: #ef4444; width: 25%; }
+    .strength-fair { background: #f59e0b; width: 50%; }
+    .strength-good { background: #10b981; width: 75%; }
+    .strength-strong { background: #059669; width: 100%; }
+
+    /* Botão */
+    button[type="submit"] {
+      font-family: 'Oswald', sans-serif;
+      background: linear-gradient(135deg, #ffd700, #ffed4a);
+      border: none;
+      border-radius: 12px;
+      padding: 1.2rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #2c1810;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(135deg, #ffed4a, #ffd700);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(-1px);
+    }
+
+    button[type="submit"]:disabled {
+      background: rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.5);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Efeito de brilho no botão */
+    button[type="submit"]::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s ease;
+    }
+
+    button[type="submit"]:hover::before {
+      left: 100%;
+    }
+
+    /* Link de login */
+    p {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    p a {
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    p a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #ffd700;
+      transition: width 0.3s ease;
+    }
+
+    p a:hover {
+      color: #ffed4a;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    p a:hover::after {
+      width: 100%;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .input-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem 0.5rem;
+      }
+
+      .section {
+        margin: 0;
+        padding: 2rem 1.5rem;
+        max-width: none;
+      }
+
+      .section h2 {
+        font-size: 2rem;
+        letter-spacing: 2px;
+        margin-bottom: 2rem;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="date"],
+      input[type="password"] {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      button[type="submit"] {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (max-width: 320px) {
+      .section {
+        padding: 1.5rem 1rem;
+      }
+
+      .section h2 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="date"],
+      input[type="password"] {
+        padding: 0.8rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      button[type="submit"] {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Animação de entrada para os elementos */
+    .input-group, .input-row, button, p {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    .input-row:nth-child(1) { animation-delay: 0.2s; }
+    .input-group:nth-child(2) { animation-delay: 0.3s; }
+    .input-group:nth-child(3) { animation-delay: 0.4s; }
+    .input-group:nth-child(4) { animation-delay: 0.5s; }
+    .input-row:nth-child(5) { animation-delay: 0.6s; }
+    button { animation-delay: 0.7s; }
+    p { animation-delay: 0.8s; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Efeito de hover sutil no container */
+    .section:hover {
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 215, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <h2>Cadastro</h2>
+    <form action="/cadastro" method="POST" id="cadastroForm">
+      <div class="input-row">
+        <div class="input-group">
+          <input type="text" name="nome" id="nome" placeholder="Nome" required />
+          <div class="error-message">Nome é obrigatório</div>
+        </div>
+        <div class="input-group">
+          <input type="text" name="sobrenome" id="sobrenome" placeholder="Sobrenome" required />
+          <div class="error-message">Sobrenome é obrigatório</div>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <input type="tel" name="celular" id="celular" placeholder="Número do Celular" required />
+        <div class="error-message">Número de celular inválido</div>
+      </div>
+      
+      <div class="input-group">
+        <input type="email" name="email" id="email" placeholder="E-mail" required />
+        <div class="error-message">E-mail inválido</div>
+      </div>
+      
+      <div class="input-group">
+        <input type="date" name="nascimento" id="nascimento" required />
+        <div class="error-message">Data de nascimento é obrigatória</div>
+      </div>
+      
+      <div class="input-row">
+        <div class="input-group">
+          <input type="password" name="senha" id="senha" placeholder="Senha" required />
+          <div class="password-strength">
+            <div class="password-strength-bar" id="strengthBar"></div>
+          </div>
+          <div class="error-message">Senha deve ter pelo menos 8 caracteres</div>
+        </div>
+        <div class="input-group">
+          <input type="password" name="confirmarSenha" id="confirmarSenha" placeholder="Confirmar Senha" required />
+          <div class="error-message">Senhas não conferem</div>
+        </div>
+      </div>
+      
+      <button type="submit" id="submitBtn">Cadastrar</button>
+
+      <script>
+  const form = document.querySelector('form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      nome: form.nome.value,
+      sobrenome: form.sobrenome.value,
+      celular: form.celular.value,
+      email: form.email.value,
+      nascimento: form.nascimento.value,
+      senha: form.senha.value
+    };
+
+    const res = await fetch('http://localhost:3000/cadastro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const json = await res.json();
+    alert(json.mensagem || json.erro);
+
+    if (res.ok) window.location.href = "login.html";
+  });
+</script>
+
+    </form>
+    <p>Já tem conta? <a href="login.html">Faça login</a></p>
+  </section>
+
+  <script>
+    // Máscara para celular
+    function mascaraCelular(v) {
+      v = v.replace(/\D/g, "");
+      v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+      v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+      return v;
+    }
+
+    // Validação de força da senha
+    function verificarForcaSenha(senha) {
+      let forca = 0;
+      if (senha.length >= 8) forca++;
+      if (/[a-z]/.test(senha)) forca++;
+      if (/[A-Z]/.test(senha)) forca++;
+      if (/[0-9]/.test(senha)) forca++;
+      if (/[^A-Za-z0-9]/.test(senha)) forca++;
+      return forca;
+    }
+
+    // Validação em tempo real
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('cadastroForm');
+      const inputs = form.querySelectorAll('input');
+      const submitBtn = document.getElementById('submitBtn');
+      const celularInput = document.getElementById('celular');
+      const senhaInput = document.getElementById('senha');
+      const confirmarSenhaInput = document.getElementById('confirmarSenha');
+      const strengthBar = document.getElementById('strengthBar');
+
+      // Máscara do celular
+      celularInput.addEventListener('input', function(e) {
+        e.target.value = mascaraCelular(e.target.value);
+      });
+
+      // Verificar força da senha
+      senhaInput.addEventListener('input', function(e) {
+        const senha = e.target.value;
+        const forca = verificarForcaSenha(senha);
+        const inputGroup = e.target.closest('.input-group');
+        
+        strengthBar.className = 'password-strength-bar';
+        
+        if (senha.length === 0) {
+          strengthBar.className = 'password-strength-bar';
+        } else if (forca <= 2) {
+          strengthBar.className = 'password-strength-bar strength-weak';
+        } else if (forca <= 3) {
+          strengthBar.className = 'password-strength-bar strength-fair';
+        } else if (forca <= 4) {
+          strengthBar.className = 'password-strength-bar strength-good';
+        } else {
+          strengthBar.className = 'password-strength-bar strength-strong';
+        }
+
+        if (senha.length >= 8) {
+          inputGroup.classList.add('valid');
+          inputGroup.classList.remove('invalid');
+        } else {
+          inputGroup.classList.add('invalid');
+          inputGroup.classList.remove('valid');
+        }
+      });
+
+      // Validar confirmação de senha
+      confirmarSenhaInput.addEventListener('input', function(e) {
+        const senha = senhaInput.value;
+        const confirmacao = e.target.value;
+        const inputGroup = e.target.closest('.input-group');
+        
+        if (confirmacao === senha && senha.length > 0) {
+          inputGroup.classList.add('valid');
+          inputGroup.classList.remove('invalid');
+        } else {
+          inputGroup.classList.add('invalid');
+          inputGroup.classList.remove('valid');
+        }
+      });
+
+      // Validação dos outros campos
+      inputs.forEach(input => {
+        input.addEventListener('blur', function(e) {
+          const inputGroup = e.target.closest('.input-group');
+          
+          if (e.target.type === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(e.target.value)) {
+              inputGroup.classList.add('valid');
+              inputGroup.classList.remove('invalid');
+            } else {
+              inputGroup.classList.add('invalid');
+              inputGroup.classList.remove('valid');
+            }
+          } else if (e.target.type === 'tel') {
+            if (e.target.value.replace(/\D/g, '').length >= 10) {
+              inputGroup.classList.add('valid');
+              inputGroup.classList.remove('invalid');
+            } else {
+              inputGroup.classList.add('invalid');
+              inputGroup.classList.remove('valid');
+            }
+          } else if (e.target.required && e.target.value.trim() !== '') {
+            inputGroup.classList.add('valid');
+            inputGroup.classList.remove('invalid');
+          } else if (e.target.required) {
+            inputGroup.classList.add('invalid');
+            inputGroup.classList.remove('valid');
+          }
+        });
+      });
+
+      // Validação do formulário
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        inputs.forEach(input => {
+          if (input.required && input.value.trim() === '') {
+            isValid = false;
+            input.closest('.input-group').classList.add('invalid');
+          }
+        });
+
+        if (senhaInput.value !== confirmarSenhaInput.value) {
+          isValid = false;
+          confirmarSenhaInput.closest('.input-group').classList.add('invalid');
+        }
+
+        if (isValid) {
+          submitBtn.textContent = 'Cadastrando...';
+          submitBtn.disabled = true;
+          // Aqui você enviaria os dados para o servidor
+          setTimeout(() => {
+            alert('Cadastro realizado com sucesso!');
+            submitBtn.textContent = 'Cadastrar';
+            submitBtn.disabled = false;
+          }, 2000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

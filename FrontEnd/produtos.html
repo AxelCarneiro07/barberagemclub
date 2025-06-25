@@ -1,0 +1,812 @@
+<!DOCTYPE html>    
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produtos - Barberagem</title>
+  <!-- Fonte Google para estilo minimalista sofisticado -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset e configurações base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0;
+      width: 100%;
+    }
+
+    /* CABEÇALHO */
+    header {
+  background: linear-gradient(135deg, #2c1810, #8b4513);
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 0; /* Remove todo o padding à esquerda */
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+  margin-right: auto; /* Empurra o elemento para a esquerda */
+  padding-left: 0px; /* Remove qualquer padding adicional */
+  margin-left: 20px; /* Move ainda mais para a esquerda */
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  border-radius: 50%;
+}
+
+header h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 600;
+  color: white;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-left: 0;
+  position: relative;
+}
+
+/* Linha decorativa sutil no cabeçalho */
+header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+}
+
+nav {
+  display: flex;
+  align-items: center; /* Alinha os itens verticalmente */
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-right: 20px;
+}
+
+nav ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Reduz o espaço entre ícone e texto */
+}
+
+/* Alinhamento específico para o item ENTRAR */
+nav ul li:first-child {
+  order: 1; /* ENTRAR */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Garante que o ícone e texto do ENTRAR fiquem perfeitamente alinhados */
+nav ul li:first-child .Icone-cabeçalho {
+  margin: 0;
+  vertical-align: middle;
+}
+
+nav ul li:first-child a {
+  margin: 0;
+  vertical-align: middle;
+  line-height: 30px; /* Mesmo height do ícone para alinhamento perfeito */
+}
+
+nav ul li:nth-child(2) {
+  order: 2; /* PRODUTOS */
+}
+
+nav ul li:nth-child(3) {
+  order: 3; /* PARCEIROS */
+}
+
+nav ul li:nth-child(4) {
+  order: 4  ; /* Ícones do WhatsApp e Instagram */
+  gap: 10px;
+  position: relative; /* Para posicionar a linha divisória */
+}
+
+
+/* Linha divisória entre PARCEIROS e os ícones sociais */
+nav ul li:last-child::before {
+  content: '';
+  position: absolute;
+  left: 100px; /* Posiciona a linha antes dos ícones sociais */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px; /* Aumenta a espessura da linha */
+  height: 35px; /* Altura da linha (um pouco menor que os ícones) */
+  background-color: #ffd700; /* Cor dourada para combinar com o tema */
+  opacity: 0.7;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+nav ul li a:hover {
+  color: #ffd700;
+}
+
+.Icone-whats, .Icone-insta, .Icone-cabeçalho {
+  height: 30px;
+  width: 30px;
+  transition: transform 0.3s ease;
+  vertical-align: middle; /* Garante alinhamento vertical */
+  display: inline-block; /* Melhora o controle de alinhamento */
+}
+
+.Icone-whats:hover, .Icone-insta:hover, .Icone-cabeçalho:hover {
+  transform: scale(1.1);
+}
+
+.social-icons-mobile {
+  display: flex;
+  gap: 10px; /* Espaçamento entre os ícones */
+  align-items: center; /* Alinha os ícones verticalmente */
+  margin-right: auto; /* Empurra os ícones para a direita */
+
+}
+
+    /* SEÇÃO HERO PRODUTOS */
+    .hero-produtos {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  linear-gradient(135deg, #2c1810, #8b4513);
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 2rem 20px;
+    }
+
+    .hero-produtos-text {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .hero-produtos h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .hero-produtos h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    .hero-produtos p {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      margin-top: 2rem;
+      color: #ffd700;
+      font-weight: 500;
+    }
+
+    /* SEÇÕES DE PRODUTOS */
+    .section {
+      padding: 4rem 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section.dark {
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      color: white;
+      margin: 0;
+      max-width: none;
+    }
+
+    .section h2 {
+      font-family: 'Oswald', sans-serif;
+      text-align: center;
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-bottom: 3rem;
+      color: #ffd700;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      position: relative;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    /* GRID DE PRODUTOS */
+    .produtos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 2rem;
+    }
+
+    .produto-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .produto-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(255,215,0,0.3);
+      border-color: #ffd700;
+    }
+
+    .produto-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    /* IMAGEM DO PRODUTO - CORRIGIDA */
+    .produto-img {
+      width: 100%;
+      height: 250px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #2c1810, #8b4513);
+    }
+
+    /* Para imagens reais */
+    .produto-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: scale-down; /* Mantém a proporção da imagem cobrindo toda a área */
+      object-position: center; /* Centraliza a imagem */
+      transition: transform 0.3s ease;
+    }
+
+    .produto-img:hover img {
+      transform: scale(1.05); /* Leve zoom no hover */
+    }
+
+    /* Para emojis/ícones quando não há imagem */
+    .produto-img:not(:has(img)) {
+      font-size: 3rem;
+      color: #ffd700;
+    }
+
+    .produto-img::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(255,215,0,0.1) 25%, transparent 25%, transparent 75%, rgba(255,215,0,0.1) 75%), 
+                  linear-gradient(45deg, rgba(255,215,0,0.1) 25%, transparent 25%, transparent 75%, rgba(255,215,0,0.1) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+      pointer-events: none; /* Para não interferir com a imagem */
+    }
+
+    .produto-info {
+      padding: 1.5rem;
+      text-align: center;
+      background-color: #8b4513;
+    }
+
+    .produto-info h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .produto-info p {
+      color: whitesmoke;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .produto-preco {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      color: #ffd700;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .btn-produto {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #2c1810;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-produto:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+      background: linear-gradient(135deg, #ffed4e, #ffd700);
+    }
+
+
+
+    /* FOOTER */
+    footer {
+      background: linear-gradient(135deg, #2c1810, #8b4513);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-weight: 500;
+    }
+
+    footer p {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+      .hero-produtos {
+        min-height: 50vh;
+        padding: 1.5rem 15px;
+      }
+
+      .produtos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .produto-img {
+        height: 200px;
+        font-size: 2rem;
+      }
+
+      .cuidados-list {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      header .container {
+        flex-direction: column;
+        gap: 15px;
+        padding-left: 0;
+        align-items: flex-start;
+      }
+
+      .logo-title {
+        align-self: flex-start;
+        margin-left: -10px;
+      }
+
+      nav ul {
+        justify-content: flex-start;
+        width: 100%;
+        gap: 15px;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section {
+        padding: 3rem 15px;
+      }
+
+      .produtos-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .produto-img {
+        height: 180px;
+        font-size: 1.5rem;
+      }
+
+      .produto-info {
+        padding: 1rem;
+      }
+
+      .hero-produtos h2 {
+        letter-spacing: 3px;
+      }
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Animações suaves */
+    * {
+      transition: all 0.3s ease-in-out;
+    }
+
+    @media (max-width: 768px) {
+      nav ul li:last-child::before {
+  display: none;
+}
+
+    header nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  header .container {
+    flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  }
+
+  .logo-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .social-and-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto; /* empurra para o lado direito */
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 10px;
+  }
+ /* Container horizontal com ícones + hambúrguer */
+  .social-icons-mobile {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .social-icons-mobile .Icone-whats,
+  .social-icons-mobile .Icone-insta {
+    height: 30px;
+    width: 30px;
+  }
+
+
+
+  .hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1100;
+  transition: transform 0.3s ease;
+    
+  }
+
+  .hamburger-menu span {
+    width: 28px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 3px;
+  transition: all 0.4s ease;
+  }
+
+  /* Animação quando ativo - vira um X */
+.hamburger-menu.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+  .hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+  .hamburger-menu.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #2c1810;
+    padding: 10px 20px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+  }
+
+  nav ul.show {
+    display: flex;
+    animation: slideDown 0.4s ease forwards;
+  }
+
+  nav ul li {
+    justify-content: flex-start;
+    padding: 10px 0;
+  }
+
+  @keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+<header>
+  <div class="container">
+    <div class="logo-title">
+      <img src="Imagens/logo.png" alt="Logo Barberagem Club" class="logo" />
+      <h1>Barberagem</h1> 
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="barberagemclub.html">INÍCIO</a></li>
+        <li><a href="login.html">ENTRAR</a></li>
+        <li><a href="produtos.html" class="active">PRODUTOS</a></li>
+        <li><a href="parceiros.html">PARCEIROS</a></li>
+      </ul>
+
+      <div class="social-icons-mobile">
+        <a href="https://wa.me/5528999354562" target="_blank">
+          <img src="Imagens/whatsapp.png" alt="WhatsApp Barberagem Club" class="Icone-whats" />
+        </a>
+        <a href="https://www.instagram.com/barbeariabarberagem/?igsh=eHJ3Z2V5NjBoNG4x#" target="_blank">
+          <img src="Imagens/instagram.png" alt="Instagram Barberagem Club" class="Icone-insta" />
+        </a>
+      </div>
+
+      <!-- Menu Hambúrguer -->
+      <div class="hamburger-menu" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+  <!-- SEÇÃO HERO PRODUTOS -->
+  <section class="hero-produtos">
+    <div class="hero-produtos-text">
+      <h2>NOSSOS PRODUTOS</h2>
+      <p>Produtos premium para o cuidado masculino</p>
+    </div>
+  </section>
+
+  <!-- SEÇÃO PRODUTOS PARA CABELO -->
+  <section class="section dark">
+    <h2>Cuidados Capilares</h2>
+    <div class="produtos-grid">
+      <div class="produto-card">
+        <div class="produto-img">💇‍♂️</div>
+        <div class="produto-info">
+          <h3>Shampoo Masculino</h3>
+          <p>Shampoo especialmente formulado para cabelos masculinos. Limpa profundamente sem ressecar.</p>
+          <div class="produto-preco">R$ 35,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">🧴</div>
+        <div class="produto-info">
+          <h3>Condicionador</h3>
+          <p>Condicionador hidratante que deixa os cabelos macios e com brilho natural.</p>
+          <div class="produto-preco">R$ 32,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">✨</div>
+        <div class="produto-info">
+          <h3>Pomada Modeladora</h3>
+          <p>Pomada com fixação forte e acabamento natural. Ideal para todos os tipos de penteado.</p>
+          <div class="produto-preco">R$ 28,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">💨</div>
+        <div class="produto-info">
+          <h3>Spray Texturizador</h3>
+          <p>Spray que adiciona textura e volume aos cabelos. Perfeito para estilos descontraídos.</p>
+          <div class="produto-preco">R$ 25,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO PRODUTOS PARA BARBA -->
+  <section class="section">
+    <h2>Cuidados com a Barba</h2>
+    <div class="produtos-grid">
+      <div class="produto-card">
+        <div class="produto-img"><img src="Imagens/Balm Tonificante para Barba.png" alt="Óleo para Barba"/></div>
+        <div class="produto-info">
+          <h3>Creme hidratante para barba</h3>
+          <p>O balm para barba ajuda a manter sua barba hidratada e definida de forma fácil e rápida.</p>
+          <div class="produto-preco">R$ 49,90</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">🧽</div>
+        <div class="produto-info">
+          <h3>Shampoo para Barba</h3>
+          <p>Limpeza específica para barbas. Remove impurezas sem ressecamento excessivo.</p>
+          <div class="produto-preco">R$ 38,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">🌿</div>
+        <div class="produto-info">
+          <h3>Balm para Barba</h3>
+          <p>Balm hidratante com ingredientes naturais. Proporciona maciez e controla os fios rebeldes.</p>
+          <div class="produto-preco">R$ 35,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">✂️</div>
+        <div class="produto-info">
+          <h3>Kit Manutenção</h3>
+          <p>Kit completo com tesoura, pente e escova para manutenção da barba em casa.</p>
+          <div class="produto-preco">R$ 65,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO CUIDADOS FACIAIS -->
+  <section class="section dark">
+    <h2>Cuidados Faciais</h2>
+    <div class="produtos-grid">
+      <div class="produto-card">
+        <div class="produto-img">🧴</div>
+        <div class="produto-info">
+          <h3>Sabonete Facial</h3>
+          <p>Sabonete específico para o rosto masculino. Limpa sem agredir a pele.</p>
+          <div class="produto-preco">R$ 22,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">💧</div>
+        <div class="produto-info">
+          <h3>Hidratante Facial</h3>
+          <p>Hidratante com proteção UV. Mantém a pele hidratada e protegida durante o dia.</p>
+          <div class="produto-preco">R$ 45,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">🪒</div>
+        <div class="produto-info">
+          <h3>Creme de Barbear</h3>
+          <p>Creme cremoso que facilita o deslizar da lâmina e protege a pele durante o barbear.</p>
+          <div class="produto-preco">R$ 30,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-img">🌊</div>
+        <div class="produto-info">
+          <h3>Pós-Barba</h3>
+          <p>Loção refrescante que acalma a pele após o barbear e previne irritações.</p>
+          <div class="produto-preco">R$ 28,00</div>
+          <a href="#" class="btn-produto">Comprar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Barberagem Club - Todos os direitos reservados.</p>
+  </footer>
+<script>
+   function toggleMobileMenu() {
+  const navMenu = document.querySelector('nav ul');
+  const hamburger = document.querySelector('.hamburger-menu');
+  
+  navMenu.classList.toggle('show');
+  hamburger.classList.toggle('active'); // Adiciona/remove a classe active para animação do X
+}
+</script>
+</body>
+</html>

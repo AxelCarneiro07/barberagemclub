@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Barberagem Club</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #e0b36c, #d4aa00);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(224, 179, 108, 0.3);
+        }
+
+        .header h1 {
+            color: #000;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(224, 179, 108, 0.2);
+        }
+
+        .card h3 {
+            color: #e0b36c;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0b36c;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #e0b36c, #d4aa00);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .agendamento-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e0b36c;
+            transition: all 0.3s ease;
+        }
+
+        .agendamento-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+
+        .agendamento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cliente-nome {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e0b36c;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .status-agendado { background: #3498db; color: white; }
+        .status-confirmado { background: #27ae60; color: white; }
+        .status-cancelado { background: #e74c3c; color: white; }
+
+        .agendamento-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-icon {
+            width: 16px;
+            height: 16px;
+            background: #e0b36c;
+            border-radius: 50%;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-cancel {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .btn-reschedule {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-reschedule:hover {
+            background: #e67e22;
+            transform: scale(1.05);
+        }
+
+        .btn-confirm {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #229954;
+            transform: scale(1.05);
+        }
+
+        .calendar-widget {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            background: #e0b36c;
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calendar-nav:hover {
+            background: #d4aa00;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day:hover {
+            background: rgba(224, 179, 108, 0.2);
+        }
+
+        .calendar-day.today {
+            background: #e0b36c;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .calendar-day.selected {
+            background: #3498db;
+            color: white;
+        }
+
+        .calendar-day.has-appointments {
+            background: rgba(231, 76, 60, 0.3);
+            border: 2px solid #e74c3c;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(224, 179, 108, 0.3);
+        }
+
+        .modal h3 {
+            color: #e0b36c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0b36c;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e0b36c;
+            box-shadow: 0 0 10px rgba(224, 179, 108, 0.3);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn-primary {
+            background: #e0b36c;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #d4aa00;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #e0b36c;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .empty-state img {
+            width: 80px;
+            height: 80px;
+            opacity: 0.5;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .agendamento-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../auth/logout.php" class="logout-btn">Sair</a>
+    
+    <div class="admin-container">
+        <div class="header">
+            <h1>Painel Administrativo</h1>
+            <div class="user-info">
+                <span id="welcomeText">Bem-vindo, Barbeiro!</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="todayAppointments">0</div>
+                <div>Agendamentos Hoje</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="weekAppointments">0</div>
+                <div>Esta Semana</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="monthRevenue">R$ 0</div>
+                <div>Faturamento Mensal</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingAppointments">0</div>
+                <div>Pendentes</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>📅 Calendário</h3>
+                <div class="calendar-widget">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" onclick="previousMonth()">‹</button>
+                        <h4 id="currentMonth">Janeiro 2025</h4>
+                        <button class="calendar-nav" onclick="nextMonth()">›</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendário será gerado via JavaScript -->
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <input type="date" class="filter-input" id="dateFilter" onchange="filterAppointments()">
+                    <select class="filter-input" id="statusFilter" onchange="filterAppointments()">
+                        <option value="">Todos os Status</option>
+                        <option value="agendado">Agendado</option>
+                        <option value="confirmado">Confirmado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📋 Agendamentos</h3>
+                <div id="appointmentsList">
+                    <!-- Agendamentos serão carregados via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Reagendar -->
+    <div id="rescheduleModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('rescheduleModal')">&times;</button>
+            <h3>Reagendar Compromisso</h3>
+            <form id="rescheduleForm">
+                <input type="hidden" id="rescheduleAppointmentId">
+                <div class="form-group">
+                    <label for="newDate">Nova Data:</label>
+                    <input type="date" id="newDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="newTime">Novo Horário:</label>
+                    <select id="newTime" required>
+                        <option value="">Selecione um horário</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn btn-primary">Reagendar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('rescheduleModal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dados simulados - em produção viriam do PHP
+        let currentUser = {
+            id: 1,
+            nome: 'Aires',
+            tipo: 'barbeiro'
+        };
+
+        let appointments = [];
+        let currentDate = new Date();
+        let selectedDate = null;
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserInfo();
+            loadAppointments();
+            generateCalendar();
+            updateStats();
+            
+            // Definir data mínima para reagendamento (hoje)
+            document.getElementById('newDate').min = new Date().toISOString().split('T')[0];
+        });
+
+        function loadUserInfo() {
+            document.getElementById('welcomeText').textContent = `Bem-vindo, ${currentUser.nome}!`;
+        }
+
+        async function loadAppointments() {
+            try {
+                // Simular carregamento de agendamentos
+                // Em produção, fazer fetch para API PHP
+                appointments = [
+                    {
+                        id: 1,
+                        cliente_nome: 'João Silva',
+                        cliente_telefone: '(28) 99999-1111',
+                        servico_nome: 'Corte + Barba',
+                        data_agendamento: '2025-06-15',
+                        horario_inicio: '09:00:00',
+                        horario_fim: '09:45:00',
+                        status: 'agendado',
+                        preco: 35.00
+                    },
+                    {
+                        id: 2,
+                        cliente_nome: 'Pedro Santos',
+                        cliente_telefone: '(28) 99999-2222',
+                        servico_nome: 'Corte Simples',
+                        data_agendamento: '2025-06-15',
+                        horario_inicio: '14:00:00',
+                        horario_fim: '14:30:00',
+                        status: 'confirmado',
+                        preco: 25.00
+                    }
+                ];
+                
+                displayAppointments(appointments);
+            } catch (error) {
+                console.error('Erro ao carregar agendamentos:', error);
+            }
+        }
+
+        function displayAppointments(appointmentList) {
+            const container = document.getElementById('appointmentsList');
+            
+            if (appointmentList.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div>📅</div>
+                        <p>Nenhum agendamento encontrado</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = appointmentList.map(appointment => `
+                <div class="agendamento-item">
+                    <div class="agendamento-header">
+                        <div class="cliente-nome">${appointment.cliente_nome}</div>
+                        <div class="status-badge status-${appointment.status}">
+                            ${appointment.status.toUpperCase()}
+                        </div>
+                    </div>
+                    <div class="agendamento-info">
+                        <div class="info-item">
+                            <div class="info-icon"></div>
+                            📞 ${appointment.cliente_telefone}
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"></div>
+                            ✂️ ${appointment.servico_nome}
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"></div>
+                            📅 ${formatDate(appointment.data_agendamento)}
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"></div>
+                            🕐 ${appointment.horario_inicio.slice(0,5)} - ${appointment.horario_fim.slice(0,5)}
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"></div>
+                            💰 R$ ${appointment.preco.toFixed(2)}
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        ${appointment.status === 'agendado' ? `
+                            <button class="btn btn-confirm" onclick="confirmAppointment(${appointment.id})">
+                                Confirmar
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-reschedule" onclick="openRescheduleModal(${appointment.id})">
+                            Reagendar
+                        </button>
+                        <button class="btn btn-cancel" onclick="cancelAppointment(${appointment.id})">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthName = currentDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            document.getElementById('currentMonth').textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const today = new Date();
+
+            let html = '';
+            
+            // Dias da semana
+            const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            weekDays.forEach(day => {
+                html += `<div style="font-weight: bold; text-align: center; padding: 10px; color: #e0b36c;">${day}</div>`;
+            });
+
+            // Espaços vazios antes do primeiro dia
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                html += '<div class="calendar-day"></div>';
+            }
+
+            // Dias do mês
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                const dateStr = date.toISOString().split('T')[0];
+                const hasAppointments = appointments.some(apt => apt.data_agendamento === dateStr);
+                const isToday = date.toDateString() === today.toDateString();
+                const isSelected = selectedDate && dateStr === selectedDate;
+
+                let classes = 'calendar-day';
+                if (isToday) classes += ' today';
+                if (isSelected) classes += ' selected';
+                if (hasAppointments) classes += ' has-appointments';
+
+                html += `<div class="${classes}" onclick="selectDate('${dateStr}')">${day}</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function selectDate(dateStr) {
+            selectedDate = dateStr;
+            document.getElementById('dateFilter').value = dateStr;
+            generateCalendar();
+            filterAppointments();
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+        }
+
+        function filterAppointments() {
+            const dateFilter = document.getElementById('dateFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            let filtered = appointments;
+
+            if (dateFilter) {
+                filtered = filtered.filter(apt => apt.data_agendamento === dateFilter);
+            }
+
+            if (statusFilter) {
+                filtered = filtered.filter(apt => apt.status === statusFilter);
+            }
+
+            displayAppointments(filtered);
+        }
+
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(apt => apt.data_agendamento === today).length;
+            
+            // Calcular semana atual
+            const startOfWeek = new Date();
+            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            const weekAppointments = appointments.filter(apt => {
+                const aptDate = new Date(apt.data_agendamento);
+                return aptDate >= startOfWeek && aptDate <= endOfWeek;
+            }).length;
+
+            // Calcular faturamento mensal
+            const currentMonth = new Date().getMonth();
+            const monthRevenue = appointments
+                .filter(apt => new Date(apt.data_agendamento).getMonth() === currentMonth)
+                .reduce((sum, apt) => sum + apt.preco, 0);
+
+            const pendingAppointments = appointments.filter(apt => apt.status === 'agendado').length;
+
+            document.getElementById('todayAppointments').textContent = todayAppointments;
+            document.getElementById('weekAppointments').textContent = weekAppointments;
+            document.getElementById('monthRevenue').textContent = `R$ ${monthRevenue.toFixed(2)}`;
+            document.getElementById('pendingAppointments').textContent = pendingAppointments;
+        }
+
+        async function confirmAppointment(appointmentId) {
+            if (confirm('Confirmar este agendamento?')) {
+                try {
+                    // Simular confirmação - em produção, fazer fetch para API
+                    const appointment = appointments.find(apt => apt.id === appointmentId);
+                    if (appointment) {
+                        appointment.status = 'confirmado';
+                        displayAppointments(appointments);
+                        updateStats();
+                        alert('Agendamento confirmado com sucesso!');
+                    }
+                } catch (error) {
+                    alert('Erro ao confirmar agendamento');
+                }
+            }
+        }
+
+        async function cancelAppointment(appointmentId) {
+            if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
+                try {
+                    // Simular cancelamento - em produção, fazer fetch para API
+                    const appointment = appointments.find(apt => apt.id === appointmentId);
+                    if (appointment) {
+                        appointment.status = 'cancelado';
+                        displayAppointments(appointments);
+                        updateStats();
+                        alert('Agendamento cancelado com sucesso!');
+                    }
+                } catch (error) {
+                    alert('Erro ao cancelar agendamento');
+                }
+            }
+        }
+
+        function openRescheduleModal(appointmentId) {
+            document.getElementById('rescheduleAppointmentId').value = appointmentId;
+            document.getElementById('rescheduleModal').style.display = 'block';
+            loadAvailableTimes();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        async function loadAvailableTimes() {
+            const date = document.getElementById('newDate').value;
+            if (!date) return;
+
+            // Horários padrão
+            const times = [
+                '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+                '11:00', '11:30', '14:00', '14:30', '15:00', '15:30',
+                '16:00', '16:30', '17:00', '17:30'
+            ];
+
+            const select = document.getElementById('newTime');
+            select.innerHTML = '<option value="">Selecione um horário</option>';
+            
+            times.forEach(time => {
+                select.innerHTML += `<option value="${time}">${time}</option>`;
+            });
+        }
+
+        document.getElementById('newDate').addEventListener('change', loadAvailableTimes);
+
+        document.getElementById('rescheduleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const appointmentId = document.getElementById('rescheduleAppointmentId').value;
+            const newDate = document.getElementById('newDate').value;
+            const newTime = document.getElementById('newTime').value;
+
+            try {
+                // Simular reagendamento - em produção, fazer fetch para API
+                const appointment = appointments.find(apt => apt.id == appointmentId);
+                if (appointment) {
+                    appointment.data_agendamento = newDate;
+                    appointment.horario_inicio = newTime + ':00';
+                    // Calcular novo horário fim baseado na duração do serviço
+                    const endTime = new Date(`2000-01-01 ${newTime}:00`);
+                    endTime.setMinutes(endTime.getMinutes() + 30); // Assumindo 30 min
+                    appointment.horario_fim = endTime.toTimeString().slice(0, 8);
+                    
+                    displayAppointments(appointments);
+                    generateCalendar();
+                    closeModal('rescheduleModal');
+                    alert('Agendamento reagendado com sucesso!');
+                }
+            } catch (error) {
+                alert('Erro ao reagendar agendamento');
+            }
+        });
+
+        function formatDate(dateStr) {
+            return new Date(dateStr + 'T00:00:00').toLocaleDateString('pt-BR');
+        }
+
+        // Fechar modal clicando fora
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+<script>
+  // Verificar se o usuário está autenticado como admin
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    const userTipo = localStorage.getItem('userTipo');
+    
+    if (!token || userTipo !== 'admin') {
+      // Usuário não autenticado ou não é admin
+      alert('Acesso restrito! Faça login como administrador.');
+      window.location.href = 'login.html';
+    }
+  });
+</script>
+</body>
+</html>

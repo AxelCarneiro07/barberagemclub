@@ -1,0 +1,762 @@
+<!DOCTYPE html>    
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parceiros - Barberagem</title>
+  <!-- Fonte Google para estilo minimalista sofisticado -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset e configurações base */
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Container geral */
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0;
+      width: 100%;
+    }
+
+    /* CABEÇALHO */
+    header {
+      background: linear-gradient(135deg, #2c1810, #8b4513);
+      color: white;
+      padding: 1rem 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-left: 0;
+    }
+
+    .logo-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+  margin-right: auto; /* Empurra o elemento para a esquerda */
+  padding-left: 0px; /* Remove qualquer padding adicional */
+  margin-left: 20px; /* Move ainda mais para a esquerda */
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  border-radius: 50%;
+}
+
+    header h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 600;
+      color: white;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-left: 0;
+      position: relative;
+    }
+
+    header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    nav {
+  display: flex;
+  align-items: center; /* Alinha os itens verticalmente */
+}
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-right: 20px;
+    }
+
+nav ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Reduz o espaço entre ícone e texto */
+}
+
+/* Alinhamento específico para o item ENTRAR */
+nav ul li:first-child {
+  order: 1; /* ENTRAR */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Garante que o ícone e texto do ENTRAR fiquem perfeitamente alinhados */
+nav ul li:first-child .Icone-cabeçalho {
+  margin: 0;
+  vertical-align: middle;
+}
+
+nav ul li:first-child a {
+  margin: 0;
+  vertical-align: middle;
+  line-height: 30px; /* Mesmo height do ícone para alinhamento perfeito */
+}
+
+nav ul li:nth-child(2) {
+  order: 2; /* PRODUTOS */
+}
+
+nav ul li:nth-child(3) {
+  order: 3; /* PARCEIROS */
+}
+
+nav ul li:nth-child(4) {
+  order: 4  ; /* Ícones do WhatsApp e Instagram */
+  gap: 10px;
+  position: relative; /* Para posicionar a linha divisória */
+}
+
+
+/* Linha divisória entre PARCEIROS e os ícones sociais */
+nav ul li:last-child::before {
+  content: '';
+  position: absolute;
+  left: 100px; /* Posiciona a linha antes dos ícones sociais */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px; /* Aumenta a espessura da linha */
+  height: 35px; /* Altura da linha (um pouco menor que os ícones) */
+  background-color: #ffd700; /* Cor dourada para combinar com o tema */
+  opacity: 0.7;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+nav ul li a:hover {
+  color: #ffd700;
+}
+
+.Icone-whats, .Icone-insta, .Icone-cabeçalho {
+  height: 30px;
+  width: 30px;
+  transition: transform 0.3s ease;
+  vertical-align: middle; /* Garante alinhamento vertical */
+  display: inline-block; /* Melhora o controle de alinhamento */
+}
+
+.Icone-whats:hover, .Icone-insta:hover, .Icone-cabeçalho:hover {
+  transform: scale(1.1);
+}
+
+.social-icons-mobile {
+  display: flex;
+  gap: 10px; /* Espaçamento entre os ícones */
+  align-items: center; /* Alinha os ícones verticalmente */
+  margin-right: auto; /* Empurra os ícones para a direita */
+
+}
+
+    /* SEÇÃO HERO */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  linear-gradient(135deg, #2c1810, #8b4513);
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 2rem 20px;
+    }
+
+    .hero-text h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .hero-text h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    .hero-text p {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      margin-top: 2rem;
+      color: #ffd700;
+      font-weight: 500;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* SEÇÕES GERAIS */
+    .section {
+      padding: 4rem 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section h2 {
+      font-family: 'Oswald', sans-serif;
+      text-align: center;
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-bottom: 3rem;
+      color: #ffd700;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      position: relative;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    /* SEÇÃO PARCEIROS */
+    .parceiros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 2rem;
+    }
+
+    .parceiro-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .parceiro-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      border-color: #ffd700;
+    }
+
+    .parceiro-logo {
+      width: 120px;
+      height: 120px;
+      background: #f8f9fa;
+      border: 3px dashed #ddd;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 0.9rem;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .parceiro-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .parceiro-nome {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2c1810;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .parceiro-categoria {
+      background: linear-gradient(135deg, #2c1810, #8b4513);
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .parceiro-descricao {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    .desconto-info {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #2c1810;
+      padding: 0.8rem 1.2rem;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: auto;
+    }
+
+    /* SEÇÃO COMO FUNCIONA */
+    .como-funciona {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                  linear-gradient(135deg, #ffd700, #ffed4e);
+      color: white;
+      margin: 0;
+      max-width: none;
+      padding: 4rem 20px;
+    }
+
+    .como-funciona h2 {
+      color: white;
+    }
+
+    .steps-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .step-numero {
+      width: 60px;
+      height: 60px;
+      background: white;
+      color: #2c1810;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0 auto 1rem;
+    }
+
+    .step-titulo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: linear-gradient(135deg, #2c1810, #8b4513);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-weight: 500;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+      .hero {
+        min-height: 50vh;
+        padding: 1.5rem 15px;
+      }
+
+      .section {
+        padding: 3rem 15px;
+      }
+
+      .parceiros-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .steps-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .parceiro-logo {
+        width: 100px;
+        height: 100px;
+      }
+      .logo-title {
+        align-self: flex-start;
+        margin-left: -10px;
+      }
+      
+    }
+
+    @media (max-width: 480px) {
+      .hero-text h2 {
+        letter-spacing: 3px;
+      }
+
+      .parceiro-card {
+        padding: 1.5rem;
+        min-height: 250px;
+      }
+
+      .step-card {
+        padding: 1.5rem;
+      }
+
+      .parceiros-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animações */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * {
+      transition: all 0.3s ease-in-out;
+    }
+
+@media (max-width: 768px) {
+
+    header nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  header .container {
+    flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  }
+
+  .logo-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .social-and-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto; /* empurra para o lado direito */
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 10px;
+  }
+ /* Container horizontal com ícones + hambúrguer */
+  .social-icons-mobile {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .social-icons-mobile .Icone-whats,
+  .social-icons-mobile .Icone-insta {
+    height: 30px;
+    width: 30px;
+  }
+
+
+
+  .hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1100;
+  transition: transform 0.3s ease;
+    
+  }
+
+  .hamburger-menu span {
+    width: 28px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 3px;
+  transition: all 0.4s ease;
+  }
+
+  /* Animação quando ativo - vira um X */
+.hamburger-menu.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+  .hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+  .hamburger-menu.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #2c1810;
+    padding: 10px 20px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+  }
+
+  nav ul.show {
+    display: flex;
+    animation: slideDown 0.4s ease forwards;
+  }
+
+  nav ul li {
+    justify-content: flex-start;
+    padding: 10px 0;
+  }
+
+  @keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+}
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <header>
+  <div class="container">
+    <div class="logo-title">
+      <img src="Imagens/logo.png" alt="Logo Barberagem Club" class="logo" />
+      <h1>Barberagem</h1> 
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="barberagemclub.html">INÍCIO</a></li>
+        <li><a href="login.html">ENTRAR</a></li>
+        <li><a href="produtos.html" class="active">PRODUTOS</a></li>
+        <li><a href="parceiros.html">PARCEIROS</a></li>
+      </ul>
+
+      <div class="social-icons-mobile">
+        <a href="https://wa.me/5528999354562" target="_blank">
+          <img src="Imagens/whatsapp.png" alt="WhatsApp Barberagem Club" class="Icone-whats" />
+        </a>
+        <a href="https://www.instagram.com/barbeariabarberagem/?igsh=eHJ3Z2V5NjBoNG4x#" target="_blank">
+          <img src="Imagens/instagram.png" alt="Instagram Barberagem Club" class="Icone-insta" />
+        </a>
+      </div>
+
+      <!-- Menu Hambúrguer -->
+      <div class="hamburger-menu" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </div>
+</header>
+
+  <!-- SEÇÃO HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h2>PARCEIROS</h2>
+      <p>Descubra os benefícios exclusivos do Barberagem Club e aproveite descontos especiais em nossos parceiros!</p>
+    </div>
+  </section>
+
+  <!-- SEÇÃO NOSSOS PARCEIROS -->
+  <section id="parceiros" class="section">
+    <h2>Nossos Parceiros</h2>
+    <div class="parceiros-grid">
+      
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Pizzaria Bella</h3>
+        <div class="parceiro-categoria">Alimentação</div>
+        <p class="parceiro-descricao">10% de desconto em todas as pizzas + refrigerante grátis nas compras acima de R$ 50</p>
+        <div class="desconto-info">Desconto: 10% + Brinde</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Academia Strong</h3>
+        <div class="parceiro-categoria">Fitness</div>
+        <p class="parceiro-descricao">15% de desconto na mensalidade + isenção da taxa de matrícula para novos alunos</p>
+        <div class="desconto-info">Desconto: 15% + Taxa Grátis</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Loja Elegance</h3>
+        <div class="parceiro-categoria">Moda</div>
+        <p class="parceiro-descricao">20% de desconto em roupas masculinas + parcelamento em até 6x sem juros</p>
+        <div class="desconto-info">Desconto: 20% + 6x s/ juros</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Auto Center</h3>
+        <div class="parceiro-categoria">Automotivo</div>
+        <p class="parceiro-descricao">12% de desconto em serviços automotivos + revisão básica gratuita</p>
+        <div class="desconto-info">Desconto: 12% + Revisão Grátis</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Posto Premium</h3>
+        <div class="parceiro-categoria">Combustíveis</div>
+        <p class="parceiro-descricao">R$ 0,15 de desconto por litro de combustível + lavagem simples gratuita</p>
+        <div class="desconto-info">R$ 0,15/L + Lavagem Grátis</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Hotel Vista Mar</h3>
+        <div class="parceiro-categoria">Hospedagem</div>
+        <p class="parceiro-descricao">25% de desconto nas diárias + café da manhã cortesia para acompanhante</p>
+        <div class="desconto-info">Desconto: 25% + Café Grátis</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Farmácia Saúde</h3>
+        <div class="parceiro-categoria">Saúde</div>
+        <p class="parceiro-descricao">8% de desconto em medicamentos + 15% em produtos de higiene e beleza</p>
+        <div class="desconto-info">8% Remédios / 15% Cosméticos</div>
+      </div>
+
+      <div class="parceiro-card">
+        <div class="parceiro-logo">LOGO AQUI</div>
+        <h3 class="parceiro-nome">Escola Técnica Pro</h3>
+        <div class="parceiro-categoria">Educação</div>
+        <p class="parceiro-descricao">30% de desconto em cursos profissionalizantes + material didático incluso</p>
+        <div class="desconto-info">Desconto: 30% + Material Grátis</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SEÇÃO COMO FUNCIONA -->
+  <section class="como-funciona">
+    <h2>Como Funciona</h2>
+    <div class="steps-container">
+      
+      <div class="step-card">
+        <div class="step-numero">1</div>
+        <h3 class="step-titulo">Seja Membro</h3>
+        <p>Faça parte do Barberagem Club e receba sua carteirinha de membro exclusiva</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-numero">2</div>
+        <h3 class="step-titulo">Apresente sua Carteirinha</h3>
+        <p>Mostre sua carteirinha do clube nos estabelecimentos parceiros</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-numero">3</div>
+        <h3 class="step-titulo">Aproveite os Descontos</h3>
+        <p>Desfrute dos descontos exclusivos e benefícios especiais de cada parceiro</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-numero">4</div>
+        <h3 class="step-titulo">Economize Sempre</h3>
+        <p>Use quantas vezes quiser e economize em diversas categorias de produtos e serviços</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Barberagem Club - Todos os direitos reservados.</p>
+  </footer>
+<script>
+   function toggleMobileMenu() {
+  const navMenu = document.querySelector('nav ul');
+  const hamburger = document.querySelector('.hamburger-menu');
+  
+  navMenu.classList.toggle('show');
+  hamburger.classList.toggle('active'); // Adiciona/remove a classe active para animação do X
+}
+</script>
+</body>
+</html>

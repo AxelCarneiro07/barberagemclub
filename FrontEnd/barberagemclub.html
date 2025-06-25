@@ -1,0 +1,205 @@
+<!DOCTYPE html>    
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barberagem Club</title>
+  <!-- Fonte Google para estilo minimalista sofisticado -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+<header>
+<div class="container">
+  <div class="logo-title">
+    <img src="Imagens/logo.png" alt="Logo Barberagem Club" class="logo" />
+    <h1>Barberagem</h1> 
+  </div>
+
+  <nav>
+<ul>
+    <li><a href="barberagemclub.html">INÍCIO</a></li> 
+    <li><a href="login.html">ENTRAR</a></li>
+    <li><a href="produtos.html">PRODUTOS</a></li>
+    <li><a href="parceiros.html">PARCEIROS</a></li>
+    <li id="admin-menu-item" style="display:none"><a href="admin.html">ADMIN</a></li>
+  </ul>
+
+  <!-- Ícones sociais agora fora do ul, antes do hamburger -->
+  <div class="social-icons-mobile">
+    <a href="https://wa.me/5528999354562" target="_blank">
+      <img src="Imagens/whatsapp.png" alt="WhatsApp Barberagem Club" class="Icone-whats" />
+    </a>
+    <a href="https://www.instagram.com/barbeariabarberagem/?igsh=eHJ3Z2V5NjBoNG4x#" target="_blank">
+      <img src="Imagens/instagram.png" alt="Instagram Barberagem Club" class="Icone-insta" />
+    </a>
+  </div>
+
+  <!-- Menu Hambúrguer -->
+  <div class="hamburger-menu" onclick="toggleMobileMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  </nav>
+</div>
+</header>
+
+
+  
+<!--BLOCO 1 -->
+  <section id="home" class="hero">
+    <div class="hero-text">
+      <h2>B A R B E A R I A</h2>
+      <h3>B A R B E R A G E M</h3>
+<h5 class="agendamento-title">AGENDE SEU HORÁRIO</h5>
+<div class="barber-cards">
+  <a href="login.html" class="barber-card">
+    <img src="Imagens/aires.png"  class="barber-photo" />
+    <h4>AÍRES</h4>
+  </a>
+  <a href="login.html" class="barber-card">
+    <img src="Imagens/well.png" class="barber-photo" />
+    <h4>WELL</h4>
+  </a>
+  <a href="login.html" class="barber-card">
+    <img src="Imagens/mateus.png"  class="barber-photo" />
+    <h4>MATEUS</h4>
+  </a>
+</div>
+  </section>
+
+  <!--SETOR PLANOS E CARDS-->
+  <section id="services" class="section">
+  <h2>Planos</h2>
+  <div class="cards-container">
+  <div class="card-flip">
+    <div class="card-inner">
+      <div class="card-frente">
+        <img src="Imagens/img-frente-card1.png" alt="Corte Clássico" class="card-img" />
+      </div>
+      <div class="card-verso">
+       <img src="Imagens/img-verso-card1.png" alt="Corte Clássico" class="card-img" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-flip">
+    <div class="card-inner">
+      <div class="card-frente">
+        <img src="Imagens/img-frente-card2.png" alt="Corte Clássico" class="card-img" />
+      </div>
+      <div class="card-verso">
+        <img src="Imagens/img-verso-card2.png" alt="Corte Clássico" class="card-img" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-flip">
+    <div class="card-inner">
+      <div class="card-frente">
+        <img src="Imagens/img-frente-card3.png" alt="Corte Clássico" class="card-img" />
+      </div>
+      <div class="card-verso">
+       <img src="Imagens/img-verso-card3.png" alt="Corte Clássico" class="card-img" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-flip">
+    <div class="card-inner">
+      <div class="card-frente">
+      <img src="Imagens/img-frente-card4.png" alt="Corte Clássico" class="card-img" />
+      </div>
+      <div class="card-verso">
+        <img src="Imagens/img-verso-card4.png" alt="Corte Clássico" class="card-img" />
+      </div>
+    </div>
+  </div>
+</div>
+  </section>
+
+  <!--SETOR AMBIENTE -->
+  <section id="team" class="section dark">
+    <h2>Nosso ambiente</h2>
+    <div class="cards">
+  <div class="card">
+    <img src="Imagens/ambiente1.jpg" alt="Ambiente 1" class="ambiente-img" />
+  </div>
+  <div class="card">
+    <img src="Imagens/ambiente2.jpg" alt="Ambiente 2" class="ambiente-img" />
+  </div>
+  <div class="card">
+    <img src="Imagens/ambiente3.jpg" alt="Ambiente 3" class="ambiente-img" />
+  </div>
+  <div class="card">
+    <img src="Imagens/ambiente4.jpg" alt="Ambiente 4" class="ambiente-img" />
+  </div>
+  <div class="card">
+    <img src="Imagens/ambiente5.jpg" alt="Ambiente 5" class="ambiente-img" />
+  </div>
+  <div class="card">
+    <img src="Imagens/ambiente6.jpg" alt="Ambiente 6" class="ambiente-img" />
+  </div>
+</div>
+</div>
+  </section>
+
+<!-- SETOR ENDEREÇO/LOCALIZAÇÃO -->
+  <section id="localizacao" class="section">
+  <h3>Localização</h3>
+  <div class="local-info">
+    <a href="https://www.google.com/maps/place/Barbearia+Barberagem/@-21.045804,-40.830522,16z/data=!4m6!3m5!1s0xb93b498c2a7013:0x50ab1d386cf5536d!8m2!3d-21.0458044!4d-40.8305217!16s%2Fg%2F11ghppbkpv?hl=pt-BR&entry=ttu&g_ep=EgoyMDI1MDYxMC4xIKXMDSoASAFQAw%3D%3D" target="_blank">
+    <img src="Imagens/icone-localizacao.png" alt="Ícone de Localização" class="icone-mapa" />
+    </a>
+    <p>
+      📍 Av Minas Gerais , 118 - Centro<br>
+      Marataizes - ES, 29345-000<br>
+      (Próximo ao Super Mercado MultiShow)
+    </p>
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3763.247074591518!2d-40.8308684!3d-21.0453741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb93b498c2a7013%3A0x50ab1d386cf5536d!2sBarbearia%20Barberagem!5e0!3m2!1spt-BR!2sbr!4v1718220712345!5m2!1spt-BR!2sbr"
+      width="100%"
+      height="300"
+      style="border:0; border-radius: 10px; margin-top: 20px;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+
+  <footer>
+  <p>&copy; 2025 Barberagem Club - Todos os direitos reservados.</p>
+</footer>
+<script src="script.js"></script>
+<script>
+   function toggleMobileMenu() {
+  const navMenu = document.querySelector('nav ul');
+  const hamburger = document.querySelector('.hamburger-menu');
+  
+  navMenu.classList.toggle('show');
+  hamburger.classList.toggle('active'); // Adiciona/remove a classe active para animação do X
+}
+
+// Função para verificar se o usuário logado é admin e mostrar link do admin
+function verificarAdmin() {
+  const userTipo = localStorage.getItem('userTipo');
+  const token = localStorage.getItem('token');
+  const adminMenuItem = document.getElementById('admin-menu-item');
+  
+  if (userTipo === 'admin' && token && adminMenuItem) {
+    adminMenuItem.style.display = 'inline-block';
+  }
+}
+
+// Executar ao carregar a página
+document.addEventListener('DOMContentLoaded', verificarAdmin);
+</script>
+</body>
+</html>

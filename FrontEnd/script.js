@@ -8,7 +8,7 @@ window.devicePixelRatio
 // Which will return the figure 3
 
 // Configuração base da API
-const API_BASE_URL = 'http://localhost/barberagem-club/backend/api';
+const API_BASE_URL = window.location.origin + '/api';
 
 // Função para listar agendamentos
 async function carregarAgendamentos() {

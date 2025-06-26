@@ -10,31 +10,31 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Servir arquivos estáticos da pasta FrontEnd (um nível acima da pasta backend)
-app.use(express.static(path.join(__dirname, '../FrontEnd')));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Rota para servir cadastro.html diretamente
 app.get('/cadastro.html', (req, res) => {
-  const filePath = path.join(__dirname, '../FrontEnd', 'cadastro.html');
+  const filePath = path.join(__dirname, '../frontend', 'cadastro.html');
   console.log('Tentando servir arquivo:', filePath);
   
   if (fs.existsSync(filePath)) {
     res.sendFile(filePath);
   } else {
     console.log('Arquivo não encontrado:', filePath);
-    res.status(404).send('Arquivo não encontrado. Verifique se cadastro.html está na pasta FrontEnd/');
+    res.status(404).send('Arquivo não encontrado. Verifique se cadastro.html está na pasta frontend/');
   }
 });
 
 // Rota para servir login.html diretamente
 app.get('/login.html', (req, res) => {
-  const filePath = path.join(__dirname, '../FrontEnd', 'login.html');
+  const filePath = path.join(__dirname, '../frontend', 'login.html');
   console.log('Tentando servir arquivo:', filePath);
   
   if (fs.existsSync(filePath)) {
     res.sendFile(filePath);
   } else {
     console.log('Arquivo não encontrado:', filePath);
-    res.status(404).send('Arquivo não encontrado. Verifique se login.html está na pasta FrontEnd/');
+    res.status(404).send('Arquivo não encontrado. Verifique se login.html está na pasta frontend/');
   }
 });
 
@@ -53,17 +53,18 @@ try {
   console.log('Servidor funcionará apenas para servir arquivos HTML');
 }
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
   console.log(`Estrutura de pastas:`);
   console.log(`- Pasta backend (atual): ${__dirname}`);
-  console.log(`- Pasta FrontEnd: ${path.join(__dirname, '../FrontEnd')}`);
+  console.log(`- Pasta FrontEnd: ${path.join(__dirname, '../frontend')}`);
   
   // Verificar se os arquivos existem
-  const cadastroPath = path.join(__dirname, '../FrontEnd', 'cadastro.html');
-  const loginPath = path.join(__dirname, '../FrontEnd', 'login.html');
-  const cssPath = path.join(__dirname, '../FrontEnd', 'stylelogin.css');
+  const cadastroPath = path.join(__dirname, '../frontend', 'cadastro.html');
+  const loginPath = path.join(__dirname, '../frontend', 'login.html');
+  const cssPath = path.join(__dirname, '../frontend', 'stylelogin.css');
   
   console.log(`- cadastro.html existe: ${fs.existsSync(cadastroPath)}`);
   console.log(`- login.html existe: ${fs.existsSync(loginPath)}`);

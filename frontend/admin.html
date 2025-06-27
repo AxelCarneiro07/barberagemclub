@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administração - Barberagem</title>
+  <link rel="stylesheet" href="stylelogin.css" />
+  <!-- Carrega configuração antes do script principal -->
+  <script src="config.js"></script>
+  <style>
+    .admin-panel {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .controls {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .search-box {
+      padding: 8px;
+      width: 250px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .btn {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .btn:hover {
+      background-color: #555;
+    }
+    .btn-danger {
+      background-color: #d9534f;
+    }
+    .btn-danger:hover {
+      background-color: #c9302c;
+    }
+    .btn-success {
+      background-color: #5cb85c;
+    }
+    .btn-success:hover {
+      background-color: #449d44;
+    }
+    .status-pendente {
+      color: orange;
+      font-weight: bold;
+    }
+    .status-confirmado {
+      color: green;
+      font-weight: bold;
+    }
+    .status-cancelado {
+      color: red;
+      text-decoration: line-through;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+    }
+    .tab.active {
+      background-color: #333;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .promocoes-form {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-panel">
+    <h1>Painel Administrativo - Barberagem Club</h1>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="usuarios">Usuários</div>
+      <div class="tab" data-tab="agendamentos">Agendamentos</div>
+      <div class="tab" data-tab="promocoes">Promoções</div>
+      <div class="tab" data-tab="configuracoes">Configurações</div>
+    </div>
+    
+    <!-- Tab: Usuários -->
+    <div class="tab-content active" id="usuarios">
+      <div class="controls">
+        <input type="text" id="searchUsuarios" class="search-box" placeholder="Buscar usuários...">
+        <div>
+          <button class="btn" id="exportUsuarios">Exportar Lista</button>
+        </div>
+      </div>
+      
+      <table id="tabelaUsuarios">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Celular</th>
+            <th>Data de Cadastro</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Será preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Tab: Agendamentos -->
+    <div class="tab-content" id="agendamentos">
+      <div class="controls">
+        <input type="text" id="searchAgendamentos" class="search-box" placeholder="Buscar agendamentos...">
+        <div>
+          <button class="btn" id="filtrarPendentes">Filtrar Pendentes</button>
+          <button class="btn" id="exportAgendamentos">Exportar Lista</button>
+        </div>
+      </div>
+      
+      <table id="tabelaAgendamentos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Barbeiro</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Será preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Tab: Promoções -->
+    <div class="tab-content" id="promocoes">
+      <div class="promocoes-form">
+        <h2>Nova Promoção</h2>
+        <form id="formPromocao">
+          <div class="form-group">
+            <label for="tituloPromocao">Título:</label>
+            <input type="text" id="tituloPromocao" required>
+          </div>
+          <div class="form-group">
+            <label for="descricaoPromocao">Descrição:</label>
+            <textarea id="descricaoPromocao" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="validadePromocao">Validade até:</label>
+            <input type="date" id="validadePromocao" required>
+          </div>
+          <button type="submit" class="btn btn-success">Publicar Promoção</button>
+        </form>
+      </div>
+      
+      <h2>Promoções Ativas</h2>
+      <table id="tabelaPromocoes">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Publicada em</th>
+            <th>Validade</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Será preenchido via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Tab: Configurações -->
+    <div class="tab-content" id="configuracoes">
+      <h2>Configurações do Sistema</h2>
+      
+      <div class="promocoes-form">
+        <h3>Cadastrar novo administrador</h3>
+        <form id="formNovoAdmin">
+          <div class="form-group">
+            <label for="emailAdmin">Email do usuário:</label>
+            <input type="email" id="emailAdmin" placeholder="Digite o email do usuário a promover" required>
+          </div>
+          <button type="submit" class="btn">Promover a administrador</button>
+        </form>
+      </div>
+      
+      <div class="promocoes-form">
+        <h3>Backup do banco de dados</h3>
+        <p>Faça um backup do banco de dados para segurança.</p>
+        <button class="btn" id="btnBackup">Gerar Backup</button>
+      </div>
+    </div>
+    
+    <p><a href="barberagemclub.html">Voltar para a página inicial</a> | <a href="#" id="btnLogout">Sair</a></p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verificar autenticação
+      const token = localStorage.getItem('token');
+      const userTipo = localStorage.getItem('userTipo');
+      
+      if (!token || userTipo !== 'admin') {
+        alert('Acesso restrito a administradores');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Gerenciamento de tabs
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          // Add active class to current tab
+          this.classList.add('active');
+          
+          // Hide all tab contents
+          const tabContents = document.querySelectorAll('.tab-content');
+          tabContents.forEach(content => content.classList.remove('active'));
+          
+          // Show current tab content
+          const tabId = this.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+          
+          // Load tab-specific data
+          if (tabId === 'usuarios') {
+            carregarUsuarios();
+          } else if (tabId === 'agendamentos') {
+            carregarAgendamentos();
+          } else if (tabId === 'promocoes') {
+            carregarPromocoes();
+          }
+        });
+      });
+      
+      // Carregar dados iniciais
+      carregarUsuarios();
+      
+      // Logout
+      document.getElementById('btnLogout').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        localStorage.removeItem('userTipo');
+        window.location.href = 'login.html';
+      });
+      
+      // Formulário para promover usuário a admin
+      document.getElementById('formNovoAdmin').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('emailAdmin').value;
+        
+        try {
+          const response = await fetch(window.AppConfig.API.promoverAdmin, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ email })
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok) {
+            alert('Usuário promovido a administrador com sucesso!');
+            document.getElementById('emailAdmin').value = '';
+            // Recarregar a lista de usuários
+            carregarUsuarios();
+          } else {
+            alert(data.erro || 'Erro ao promover usuário');
+          }
+        } catch (error) {
+          console.error('Erro:', error);
+          alert('Erro ao conectar com o servidor');
+        }
+      });
+      
+      // Backup do banco de dados
+      document.getElementById('btnBackup').addEventListener('click', function() {
+        alert('Funcionalidade de backup será implementada em breve');
+      });
+      
+      // Filtro para busca de usuários
+      document.getElementById('searchUsuarios').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#tabelaUsuarios tbody tr');
+        
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+      });
+      
+      // Filtro para busca de agendamentos
+      document.getElementById('searchAgendamentos').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#tabelaAgendamentos tbody tr');
+        
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+      });
+      
+      // Filtrar agendamentos pendentes
+      document.getElementById('filtrarPendentes').addEventListener('click', function() {
+        const rows = document.querySelectorAll('#tabelaAgendamentos tbody tr');
+        const isFiltrado = this.getAttribute('data-filtrado') === 'true';
+        
+        if (isFiltrado) {
+          // Mostrar todos
+          rows.forEach(row => row.style.display = '');
+          this.textContent = 'Filtrar Pendentes';
+          this.setAttribute('data-filtrado', 'false');
+        } else {
+          // Mostrar apenas pendentes
+          rows.forEach(row => {
+            const statusCell = row.querySelector('td:nth-child(7)');
+            row.style.display = statusCell.textContent.trim() === 'pendente' ? '' : 'none';
+          });
+          this.textContent = 'Mostrar Todos';
+          this.setAttribute('data-filtrado', 'true');
+        }
+      });
+    });
+    
+    // Função para carregar lista de usuários
+    async function carregarUsuarios() {
+      const token = localStorage.getItem('token');
+      const tbody = document.querySelector('#tabelaUsuarios tbody');
+      tbody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+      
+      try {
+        const response = await fetch(`${window.AppConfig.API.base}/usuarios`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Erro ao carregar usuários');
+        }
+        
+        const usuarios = await response.json();
+        
+        if (usuarios.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7">Nenhum usuário encontrado</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = '';
+        usuarios.forEach(usuario => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${usuario.id}</td>
+            <td>${usuario.nome} ${usuario.sobrenome}</td>
+            <td>${usuario.email}</td>
+            <td>${usuario.celular}</td>
+            <td>${new Date(usuario.created_at || Date.now()).toLocaleDateString()}</td>
+            <td>${usuario.tipo}</td>
+            <td>
+              <button class="btn" onclick="verDetalhesUsuario(${usuario.id})">Detalhes</button>
+              ${usuario.tipo !== 'admin' ? 
+                `<button class="btn btn-success" onclick="promoverUsuario(${usuario.id})">Promover</button>` : ''}
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error('Erro:', error);
+        tbody.innerHTML = '<tr><td colspan="7">Erro ao carregar dados. Tente novamente mais tarde.</td></tr>';
+      }
+    }
+    
+    // Função para carregar agendamentos
+    async function carregarAgendamentos() {
+      const token = localStorage.getItem('token');
+      const tbody = document.querySelector('#tabelaAgendamentos tbody');
+      tbody.innerHTML = '<tr><td colspan="8">Carregando...</td></tr>';
+      
+      try {
+        const response = await fetch(`${window.AppConfig.API.base}/agendamentos`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Erro ao carregar agendamentos');
+        }
+        
+        const agendamentos = await response.json();
+        
+        if (agendamentos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8">Nenhum agendamento encontrado</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = '';
+        agendamentos.forEach(agendamento => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${agendamento.id}</td>
+            <td>${agendamento.cliente_nome || 'Cliente #' + agendamento.usuario_id}</td>
+            <td>${agendamento.barbeiro}</td>
+            <td>${agendamento.servico}</td>
+            <td>${formatarData(agendamento.data)}</td>
+            <td>${agendamento.hora}</td>
+            <td class="status-${agendamento.status}">${agendamento.status}</td>
+            <td>
+              ${agendamento.status === 'pendente' ? `
+                <button class="btn btn-success" onclick="confirmarAgendamento(${agendamento.id})">Confirmar</button>
+                <button class="btn btn-danger" onclick="cancelarAgendamento(${agendamento.id})">Cancelar</button>
+              ` : ''}
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error('Erro:', error);
+        tbody.innerHTML = '<tr><td colspan="8">Erro ao carregar dados. Tente novamente mais tarde.</td></tr>';
+      }
+    }
+    
+    // Função para carregar promoções
+    function carregarPromocoes() {
+      // Esta função seria implementada quando o backend tiver endpoint para promoções
+      const tbody = document.querySelector('#tabelaPromocoes tbody');
+      tbody.innerHTML = '<tr><td colspan="5">Funcionalidade em desenvolvimento</td></tr>';
+    }
+    
+    // Funções auxiliares
+    function formatarData(dataString) {
+      if (!dataString) return '';
+      try {
+        const partes = dataString.split('-');
+        if (partes.length !== 3) return dataString;
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+      } catch (e) {
+        return dataString;
+      }
+    }
+    
+    // Funções para ações nos usuários
+    function verDetalhesUsuario(id) {
+      alert(`Detalhes do usuário ${id} serão implementados em breve`);
+    }
+    
+    function promoverUsuario(id) {
+      const token = localStorage.getItem('token');
+      
+      if (confirm(`Deseja realmente promover o usuário #${id} para administrador?`)) {
+        fetch(`${window.AppConfig.API.base}/promover-admin/${id}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.sucesso) {
+            alert('Usuário promovido com sucesso!');
+            carregarUsuarios();
+          } else {
+            alert(data.erro || 'Erro ao promover usuário');
+          }
+        })
+        .catch(err => {
+          console.error('Erro:', err);
+          alert('Erro ao conectar com o servidor');
+        });
+      }
+    }
+    
+    // Funções para ações nos agendamentos
+    function confirmarAgendamento(id) {
+      const token = localStorage.getItem('token');
+      
+      fetch(`${window.AppConfig.API.base}/agendamentos/${id}/confirmar`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.sucesso) {
+          alert('Agendamento confirmado com sucesso!');
+          carregarAgendamentos();
+        } else {
+          alert(data.erro || 'Erro ao confirmar agendamento');
+        }
+      })
+      .catch(err => {
+        console.error('Erro:', err);
+        alert('Erro ao conectar com o servidor');
+      });
+    }
+    
+    function cancelarAgendamento(id) {
+      const token = localStorage.getItem('token');
+      
+      if (confirm(`Deseja realmente cancelar o agendamento #${id}?`)) {
+        fetch(`${window.AppConfig.API.base}/agendamentos/${id}/cancelar`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.sucesso) {
+            alert('Agendamento cancelado com sucesso!');
+            carregarAgendamentos();
+          } else {
+            alert(data.erro || 'Erro ao cancelar agendamento');
+          }
+        })
+        .catch(err => {
+          console.error('Erro:', err);
+          alert('Erro ao conectar com o servidor');
+        });
+      }
+    }
+    
+    // Exportar dados
+    document.getElementById('exportUsuarios').addEventListener('click', function() {
+      exportTable('tabelaUsuarios', 'usuarios_barberagem');
+    });
+    
+    document.getElementById('exportAgendamentos').addEventListener('click', function() {
+      exportTable('tabelaAgendamentos', 'agendamentos_barberagem');
+    });
+    
+    function exportTable(tableId, filename) {
+      const table = document.getElementById(tableId);
+      let csv = [];
+      const rows = table.querySelectorAll('tr');
+      
+      for (let i = 0; i < rows.length; i++) {
+        const row = [], cols = rows[i].querySelectorAll('td, th');
+        
+        for (let j = 0; j < cols.length; j++) {
+          // Remover botões ao exportar
+          let text = cols[j].innerText;
+          if (cols[j].querySelector('button')) {
+            text = ''; // Não exportar as células com botões
+          }
+          row.push('"' + text.replace(/"/g, '""') + '"');
+        }
+        csv.push(row.join(','));
+      }
+      
+      const csvString = csv.join('\n');
+      const a = document.createElement('a');
+      const blob = new Blob([csvString], {type: 'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      
+      a.href = url;
+      a.download = filename + '_' + new Date().toISOString().slice(0,10) + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    
+    // Formulário de promoção
+    document.getElementById('formPromocao').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Funcionalidade de promoções será implementada em breve!');
+      this.reset();
+    });
+  </script>
+</body>
+</html>

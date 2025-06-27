@@ -1,0 +1,61 @@
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+require('dotenv').config();
+
+// Get database path from environment variable or use default
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'barberagem.db');
+
+// Create a new database connection
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Erro ao conectar ao banco de dados:', err.message);
+    process.exit(1);
+  }
+  console.log(`Conectado ao banco de dados SQLite: ${dbPath}`);
+
+  // Enable foreign keys enforcement
+  db.run('PRAGMA foreign_keys = ON');
+
+  // Create users table if it doesn't exist
+  db.run(`
+    CREATE TABLE IF NOT EXISTS usuarios (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      sobrenome TEXT NOT NULL,
+      celular TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      nascimento TEXT NOT NULL,
+      senha TEXT NOT NULL,
+      tipo TEXT DEFAULT 'usuario'
+    )
+  `, (err) => {
+    if (err) {
+      console.error('Erro ao criar tabela de usuários:', err.message);
+    } else {
+      console.log('Tabela de usuários verificada/criada com sucesso!');
+    }
+  });
+
+  // Create agendamentos (appointments) table if it doesn't exist
+  db.run(`
+    CREATE TABLE IF NOT EXISTS agendamentos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      usuario_id INTEGER NOT NULL,
+      barbeiro TEXT NOT NULL,
+      servico TEXT NOT NULL,
+      data TEXT NOT NULL,
+      hora TEXT NOT NULL,
+      status TEXT DEFAULT 'pendente',
+      FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
+    )
+  `, (err) => {
+    if (err) {
+      console.error('Erro ao criar tabela de agendamentos:', err.message);
+    } else {
+      console.log('Tabela de agendamentos verificada/criada com sucesso!');
+    }
+  });
+});
+
+// Export the database for use in other modules
+module.exports = db;

@@ -1,0 +1,153 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../database');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+// Get the JWT secret from environment variables or use a default (only for development)
+const JWT_SECRET = process.env.JWT_SECRET || 'segredo_barberagem';
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1h';
+
+// Rota de cadastro
+router.post('/cadastro', async (req, res) => {
+  const { nome, sobrenome, celular, email, nascimento, senha } = req.body;
+
+  try {
+    // Validação básica
+    if (!nome || !sobrenome || !celular || !email || !nascimento || !senha) {
+      return res.status(400).json({ erro: 'Todos os campos são obrigatórios.' });
+    }
+
+    // Validar formato de e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ erro: 'Formato de e-mail inválido.' });
+    }
+
+    const hash = await bcrypt.hash(senha, 10);
+
+    db.run(
+      `INSERT INTO usuarios (nome, sobrenome, celular, email, nascimento, senha)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [nome, sobrenome, celular, email, nascimento, hash],
+      function (err) {
+        if (err) {
+          console.error('Erro ao cadastrar usuário:', err);
+          return res.status(400).json({ erro: 'E-mail já cadastrado ou erro no banco de dados.' });
+        }
+        return res.status(200).json({ mensagem: 'Usuário cadastrado com sucesso!' });
+      }
+    );
+  } catch (err) {
+    console.error('Erro no servidor:', err);
+    res.status(500).json({ erro: 'Erro interno no servidor.' });
+  }
+});
+
+// Rota de login
+router.post('/login', (req, res) => {
+  const { email, senha } = req.body;
+  
+  // Validação básica
+  if (!email || !senha) {
+    return res.status(400).json({ erro: 'E-mail e senha são obrigatórios.' });
+  }
+
+  db.get(`SELECT * FROM usuarios WHERE email = ?`, [email], async (err, user) => {
+    if (err) {
+      console.error('Erro na consulta de usuário:', err);
+      return res.status(500).json({ erro: 'Erro ao buscar usuário.' });
+    }
+    
+    if (!user) {
+      return res.status(401).json({ erro: 'Usuário não encontrado.' });
+    }
+
+    try {
+      const match = await bcrypt.compare(senha, user.senha);
+      if (!match) return res.status(401).json({ erro: 'Senha incorreta.' });
+
+      const token = jwt.sign({ 
+        id: user.id, 
+        nome: user.nome, 
+        tipo: user.tipo || 'usuario' // Adiciona o tipo ao token
+      }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+
+      res.json({ 
+        mensagem: 'Login bem-sucedido!', 
+        token,
+        tipo: user.tipo || 'usuario' // Retorna o tipo para o frontend
+      });
+    } catch (error) {
+      console.error('Erro ao verificar senha:', error);
+      res.status(500).json({ erro: 'Erro ao verificar credenciais.' });
+    }
+  });
+});
+
+// Middleware para verificação de token JWT
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader) {
+    return res.status(401).json({ erro: 'Nenhum token fornecido.' });
+  }
+
+  // Formato: "Bearer token"
+  const parts = authHeader.split(' ');
+  if (parts.length !== 2) {
+    return res.status(401).json({ erro: 'Erro no formato do token.' });
+  }
+
+  const [scheme, token] = parts;
+  if (!/^Bearer$/i.test(scheme)) {
+    return res.status(401).json({ erro: 'Token mal formatado.' });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ erro: 'Token inválido ou expirado.' });
+    }
+    
+    req.userId = decoded.id;
+    req.userTipo = decoded.tipo;
+    return next();
+  });
+};
+
+// Middleware para verificação de admin
+const adminMiddleware = (req, res, next) => {
+  if (req.userTipo !== 'admin') {
+    return res.status(403).json({ erro: 'Acesso restrito a administradores.' });
+  }
+  return next();
+};
+
+// Rota para promover um usuário a administrador (protegida)
+router.post('/promover-admin', authMiddleware, adminMiddleware, (req, res) => {
+  const { emailUsuario } = req.body;
+  
+  if (!emailUsuario) {
+    return res.status(400).json({ erro: 'E-mail do usuário é obrigatório.' });
+  }
+  
+  db.run(`UPDATE usuarios SET tipo = 'admin' WHERE email = ?`, [emailUsuario], function(err) {
+    if (err) {
+      console.error('Erro ao atualizar usuário:', err);
+      return res.status(500).json({ erro: 'Erro ao atualizar usuário.' });
+    }
+    
+    if (this.changes === 0) {
+      return res.status(404).json({ erro: 'Usuário não encontrado.' });
+    }
+    
+    res.json({ mensagem: 'Usuário promovido a administrador com sucesso!' });
+  });
+});
+
+// Rota protegida para verificar autenticação (útil para frontend)
+router.get('/verificar-auth', authMiddleware, (req, res) => {
+  res.json({ autenticado: true, tipo: req.userTipo });
+});
+
+module.exports = router;
